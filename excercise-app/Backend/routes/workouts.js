@@ -1,5 +1,5 @@
 import { Router } from "express";
-
+import { Workout } from "../models/workoutModel";
 const router = Router();
 
 //get workouts
@@ -14,8 +14,14 @@ router.get("/:id", (req, res) => {
 
 //post new workout
 
-router.post("/", (req, res) => {
-  res.json({ mssg: "post a new workout" });
+router.post("/", async (req, res) => {
+  const { title, sets, reps } = req.body;
+  try {
+    const workout = await Workout.create({ title, sets, reps });
+    res.status(200).json(workout);
+  } catch (err) {
+    res.status(400).json({ err: err.mssg });
+  }
 });
 
 //delete single workout
