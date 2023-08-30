@@ -1,13 +1,10 @@
 import { Workout } from "../models/workoutModel.js";
 import mongoose from "mongoose";
 
-//get all workouts
-
 const getAllWorkouts = async (req, res) => {
   const workout = await Workout.find({}).sort({ createdAt: -1 });
   res.status(200).json(workout);
 };
-//get single workout
 
 const getSingleWorkout = async (req, res) => {
   const { id } = req.params;
@@ -22,7 +19,6 @@ const getSingleWorkout = async (req, res) => {
   res.status(200).json(workout);
 };
 
-//create new workout
 const createWorkout = async (req, res) => {
   const { title, sets, reps } = req.body;
   try {
@@ -50,8 +46,6 @@ const deleteWorkout = async (req, res) => {
       .json({ err: "An error occurred while deleting the workout" });
   }
 };
-
-// update workout
 
 const updateWorkout = async (req, res) => {
   const { id } = req.params;
