@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import { router } from "./routes/workouts.js";
+import { router } from "./src/workout/workout.routes.js";
 import { MONGO_URI, PORT } from "./config/config.js";
 import dotenv from "dotenv";
 
