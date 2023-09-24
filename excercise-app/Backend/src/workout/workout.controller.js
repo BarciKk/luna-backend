@@ -29,9 +29,9 @@ const getSingleWorkout = async (req, res) => {
 };
 
 const createWorkout = async (req, res) => {
-  const { title, sets, reps } = req.body;
+  const { title, sets, reps, load } = req.body;
   try {
-    const workout = await Workout.create({ title, sets, reps });
+    const workout = await Workout.create({ title, sets, reps, load });
     res.status(201).json(workout);
   } catch (err) {
     res.status(400).json({ err: "Cannot create workout!" });
