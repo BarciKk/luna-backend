@@ -2,22 +2,34 @@ import mongoose, { Schema } from "mongoose";
 
 const workoutSchema = new Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true,
     },
-    reps: {
-      type: Number,
+    date: {
+      type: String,
       required: true,
     },
-    sets: {
-      type: Number,
-      required: true,
-    },
-    load: {
-      type: Number,
-      required: false,
-    },
+    exercise: [
+      {
+        title: {
+          type: String,
+          required: true,
+        },
+        reps: {
+          type: Number,
+          required: true,
+        },
+        sets: {
+          type: Number,
+          required: true,
+        },
+        load: {
+          type: Number,
+          required: false,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

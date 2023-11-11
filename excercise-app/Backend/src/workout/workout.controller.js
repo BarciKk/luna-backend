@@ -29,15 +29,14 @@ const getSingleWorkout = async (req, res) => {
 };
 
 const createWorkout = async (req, res) => {
-  const { title, sets, reps, load } = req.body;
+  const { name, date, exercise } = req.body;
   try {
-    const workout = await Workout.create({ title, sets, reps, load });
+    const workout = await Workout.create({ name, date, exercise });
     res.status(201).json(workout);
   } catch (err) {
     res.status(400).json({ err: "Cannot create workout!" });
   }
 };
-// delete single workout
 const deleteWorkout = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {

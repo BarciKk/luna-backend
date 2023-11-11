@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
-import { router } from "./src/workout/workout.routes.js";
+import { authRouter } from "./src/auth/auth.routes.js";
+import { workoutRouter } from "./src/workout/workout.routes.js";
 import { MONGO_URI, PORT } from "./config/config.js";
 import dotenv from "dotenv";
 
@@ -10,11 +11,12 @@ const app = express();
 
 //middleware
 app.use(express.json());
-app.use("/api/workouts/", router);
+app.use("/workouts/", workoutRouter);
+app.use("/auth/", authRouter);
 
 //connect DB
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     app.listen(PORT, () => {
       console.log(
@@ -24,5 +26,5 @@ mongoose
     });
   })
   .catch((err) => {
-    throw new Error(err);
+    throw new Error("field connecting to the database", err);
   });

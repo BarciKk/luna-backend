@@ -6,22 +6,21 @@ import {
   getSingleWorkout,
   updateWorkout,
 } from "./workout.controller.js";
-const router = Router();
+const workoutRouter = Router();
 
 //get workouts
-router.get("/", getAllWorkouts);
+workoutRouter.get("/", getAllWorkouts);
 
 //get single workout
-router.get("/:id", getSingleWorkout);
+workoutRouter.get("/:id", getSingleWorkout);
 
-//post new workout
-
-router.post("/", createWorkout);
+//create new workout
+workoutRouter.post("/", createWorkout);
 
 //delete single workout
-router.delete("/:id", deleteWorkout);
+workoutRouter.delete("/:id", deleteWorkout);
 
 //update  workout
-router.patch("/:id", updateWorkout);
+workoutRouter.patch("/:id", updateWorkout);
 
-export { router };
+export { workoutRouter };
