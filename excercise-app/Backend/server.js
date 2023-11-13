@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import { authRouter } from "./src/auth/auth.routes.js";
+import { authRouter } from "./src/auth/User/auth.routes.js";
 import { workoutRouter } from "./src/workout/workout.routes.js";
 import { MONGO_URI, PORT } from "./config/config.js";
 import dotenv from "dotenv";
@@ -11,8 +11,8 @@ const app = express();
 
 //middleware
 app.use(express.json());
-app.use("/workouts/", workoutRouter);
-app.use("/auth/", authRouter);
+app.use("/workouts", workoutRouter);
+app.use("/auth", authRouter);
 
 //connect DB
 mongoose
