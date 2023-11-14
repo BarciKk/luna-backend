@@ -30,43 +30,37 @@ const userLogin = async (req, res) => {
 };
 
 const userRegister = async (req, res) => {
-  try {
-    const { username, password, email } = req.body;
+  const { username, password, email } = req.body;
 
-    if (!(username && password && email)) {
-      res.status(400).json({ error: "Invalid username email or password!" });
-    }
-
-    const checkIfUserExist = await User.findOne({ email });
-
-    if (checkIfUserExist) {
-      res.status(401).json({ error: "User with this email already exists!" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
-      username,
-      password: hashedPassword,
-      email,
-    });
-    const registerToken = jwt.sign(
-      {
-        _id: user._id,
-        email,
-      },
-      process.env.ACCESS_TOKEN,
-      {
-        expiresIn: "2h",
-      }
-    );
-
-    res.status(201).json({ accessToken: registerToken });
-  } catch (err) {
-    return res.status(401).json({ err: "Server internal error!" });
+  if (!(username && password && email)) {
+    res.status(400).json({ error: "Invalid username email or password!" });
   }
-};
 
-//! Idk man figure out what went wrong here for now looking fine for me was working for while now not
+  const checkIfUserExist = await User.findOne({ email });
+
+  if (checkIfUserExist) {
+    res.status(401).json({ error: "User with this email already exists!" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const user = await User.create({
+    username,
+    password: hashedPassword,
+    email,
+  });
+  const registerToken = jwt.sign(
+    {
+      _id: user._id,
+      email,
+    },
+    process.env.ACCESS_TOKEN,
+    {
+      expiresIn: "2h",
+    }
+  );
+
+  res.status(201).json({ registerToken: registerToken });
+};
 
 export { userLogin, userRegister };
