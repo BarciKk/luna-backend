@@ -1,17 +1,24 @@
 import { User } from "./user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { loginValidation, registerValidation } from "./user.validation.js";
 
 const userLogin = async (req, res) => {
   try {
+    const { error } = loginValidation(req.body);
+
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+
     const { username, password } = req.body;
 
     const user = await User.findOne({ username });
     if (!user) {
       res.status(401).json({ error: "Invalid username or password!" });
     }
+    const checkPasswordMatch = await bcrypt.compare(password, user.password);
 
-    const checkPasswordMatch = bcrypt.compare(password, user.password);
     if (!checkPasswordMatch) {
       res.status(401).json({ error: "Invalid username or password!" });
     }
@@ -30,6 +37,12 @@ const userLogin = async (req, res) => {
 };
 
 const userRegister = async (req, res) => {
+  const { error } = registerValidation(req.body);
+
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
   const { username, password, email } = req.body;
 
   if (!(username && password && email)) {
