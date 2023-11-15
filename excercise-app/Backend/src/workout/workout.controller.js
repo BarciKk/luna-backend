@@ -1,6 +1,6 @@
 import { Workout } from "./workout.model.js";
 import mongoose from "mongoose";
-
+import { workoutValidation } from "./workout.validation.js";
 const getAllWorkouts = async (req, res) => {
   try {
     const workout = await Workout.find({}).sort({ createdAt: -1 });
@@ -29,6 +29,12 @@ const getSingleWorkout = async (req, res) => {
 };
 
 const createWorkout = async (req, res) => {
+  const { error } = workoutValidation(req.body);
+
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
   const { name, date, exercise } = req.body;
   try {
     const workout = await Workout.create({ name, date, exercise });
