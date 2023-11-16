@@ -20,3 +20,4 @@ const loginValidation = (loginData) =>
   loginSchema.validate(loginData, { abortEarly: false });
 
 export { registerValidation, loginValidation };
+// all u need  Joi.string() and required in username password leave email

@@ -29,6 +29,7 @@ const userLogin = async (req, res) => {
         expiresIn: "2h",
       }
     );
+    //supertest
 
     return res.json({ accessToken: accessToken });
   } catch {
@@ -48,7 +49,7 @@ const userRegister = async (req, res) => {
   if (!(username && password && email)) {
     res.status(400).json({ error: "Invalid username email or password!" });
   }
-
+  //dont really need that cuz validation
   const checkIfUserExist = await User.findOne({ email });
 
   if (checkIfUserExist) {
@@ -72,8 +73,13 @@ const userRegister = async (req, res) => {
       expiresIn: "2h",
     }
   );
+  //register token is useless just return message
 
   return res.status(201).json({ registerToken: registerToken });
 };
 
 export { userLogin, userRegister };
+
+
+//middleware validation
+//fix github XD
