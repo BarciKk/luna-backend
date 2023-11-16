@@ -15,12 +15,12 @@ const userLogin = async (req, res) => {
 
     const user = await User.findOne({ username });
     if (!user) {
-      res.status(401).json({ error: "Invalid username or password!" });
+      return res.status(401).json({ error: "Invalid username or password!" });
     }
     const checkPasswordMatch = await bcrypt.compare(password, user.password);
 
     if (!checkPasswordMatch) {
-      res.status(401).json({ error: "Invalid username or password!" });
+      return res.status(401).json({ error: "Invalid username or password!" });
     }
     const accessToken = jwt.sign(
       { username: user.username },
@@ -73,7 +73,7 @@ const userRegister = async (req, res) => {
     }
   );
 
-  res.status(201).json({ registerToken: registerToken });
+  return res.status(201).json({ registerToken: registerToken });
 };
 
 export { userLogin, userRegister };
