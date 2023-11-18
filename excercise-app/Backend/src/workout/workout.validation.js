@@ -1,7 +1,7 @@
 import Joi from "Joi";
 
 const workoutSchema = Joi.object({
-  name: Joi.string().min(5).max(48).required(),
+  name: Joi.string().required(),
   date: Joi.date(),
   exercise: Joi.array().items({
     title: Joi.string().min(5).max(32).required(),
