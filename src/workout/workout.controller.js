@@ -11,7 +11,6 @@ const getAllWorkouts = async (req, res) => {
       .json({ error: "An error occurred while fetching workouts" });
   }
 };
-//test
 
 const getSingleWorkout = async (req, res) => {
   const { id } = req.params;
