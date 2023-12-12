@@ -4,17 +4,17 @@ import { authRouter } from "./src/auth/user/auth.routes.js";
 import { workoutRouter } from "./src/workout/workout.routes.js";
 import { MONGO_URI, PORT } from "./config/config.js";
 import dotenv from "dotenv";
-
+import cors from "cors";
 dotenv.config();
 
 const app = express();
 
 //middleware
+app.use(cors());
 app.use(express.json());
 app.use("/workouts", workoutRouter);
 app.use("/auth", authRouter);
 
-//connect DB
 mongoose
   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
