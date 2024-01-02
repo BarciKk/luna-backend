@@ -31,7 +31,7 @@ const userLogin = async (req, res) => {
     );
     //supertest
 
-    return res.json({ accessToken: accessToken });
+    return res.json({ accessToken: accessToken, user: user });
   } catch {
     return res.status(500).json({ error: "user not found!!" });
   }
