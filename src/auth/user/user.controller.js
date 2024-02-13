@@ -44,12 +44,15 @@ const userRegister = async (req, res) => {
     return res.status(400).json({ error: error.details[0].message });
   }
 
-  const { username, password, email } = req.body;
+  const { username, password, email, repeatPassword } = req.body;
 
   const checkIfUserExist = await User.findOne({ email });
 
   if (checkIfUserExist) {
     res.status(401).json({ error: "User with this email already exists!" });
+  }
+  if (password !== repeatPassword) {
+    return res.status(400).json({ error: "Passwords do not match" });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);

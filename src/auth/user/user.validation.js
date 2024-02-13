@@ -3,6 +3,7 @@ import Joi from "Joi";
 const registrationSchema = Joi.object({
   username: Joi.string().required(),
   password: Joi.string().required(),
+  repeatPassword: Joi.string().required(),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "pl"] } })
     .required(),
