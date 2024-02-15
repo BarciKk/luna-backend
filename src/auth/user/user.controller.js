@@ -46,10 +46,20 @@ const userRegister = async (req, res) => {
 
   const { username, password, email, repeatPassword } = req.body;
 
-  const checkIfUserExist = await User.findOne({ email });
+  const checkIfUserExist = await User.findOne({
+    $or: [{ email }, { username }],
+  });
 
   if (checkIfUserExist) {
-    res.status(401).json({ error: "User with this email already exists!" });
+    if (checkIfUserExist.email === email) {
+      return res
+        .status(401)
+        .json({ error: "User with this email already exists!" });
+    } else {
+      return res
+        .status(401)
+        .json({ error: "User with this username already exists!" });
+    }
   }
   if (password !== repeatPassword) {
     return res.status(400).json({ error: "Passwords do not match" });
