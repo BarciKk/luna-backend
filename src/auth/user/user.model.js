@@ -9,8 +9,24 @@ const userSchema = new Schema({
   password: {
     type: String,
   },
+  avatar: {
+    type: String,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
   repeatPassword: {
     type: String,
+  },
+  bio: {
+    type: String,
+    default: "",
+  },
+
+  createdAt: {
+    type: Date,
+    default: new Date(),
   },
   email: {
     type: String,

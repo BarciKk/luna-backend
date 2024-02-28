@@ -7,6 +7,11 @@ const registrationSchema = Joi.object({
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "pl"] } })
     .required(),
+  avatar: Joi.string(),
+  isActive: Joi.boolean().default(true),
+  createdAt: Joi.date(),
+  bio: Joi.string().default(""),
+  createdAt: Joi.date(),
 });
 
 const loginSchema = Joi.object({
