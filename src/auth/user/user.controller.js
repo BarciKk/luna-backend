@@ -1,6 +1,7 @@
 import { User } from "./user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
 import { loginValidation, registerValidation } from "./user.validation.js";
 
 const userLogin = async (req, res) => {
