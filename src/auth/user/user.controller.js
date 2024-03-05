@@ -3,6 +3,28 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import { loginValidation, registerValidation } from "./user.validation.js";
+import { resetPasswordToken } from "../../email/ResetPassword/resetPassword.mail.js";
+
+const resetPasswordPin = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    console.log(user);
+    const randomPinNumber = Math.floor(10000 + Math.random() * 90000);
+    if (!user) {
+      return res.status(401).json({ error: "Invalid username or password!" });
+    }
+
+    if (!randomPinNumber) return null;
+    await resetPasswordToken(randomPinNumber, user.email);
+
+    res.status(200).json({ message: "Password reset PIN sent successfully." });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error!" });
+  }
+};
+//we have to handle last sended OTP to the user to verify that and next verify that s
 
 const userLogin = async (req, res) => {
   try {
@@ -87,4 +109,4 @@ const userRegister = async (req, res) => {
   return res.status(201).json({ registerToken: registerToken });
 };
 
-export { userLogin, userRegister };
+export { userLogin, userRegister, resetPasswordPin };

@@ -1,11 +1,20 @@
 import nodemailer from "nodemailer";
-import { MAIL_CONFIG } from "../../config/config.js";
+import { EMAIL_PASS, EMAIL_USER } from "../../config/config.js";
+// import dotenv from "dotenv";
 
 export const sendMail = async (to, subject, text, html) => {
-  const transporter = nodemailer.createTransport(MAIL_CONFIG);
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASS,
+    },
+  });
 
   const info = await transporter.sendMail({
-    from: "mailtrap@demomailtrap.com", //we have to change that in the future
+    from: "lunasync.help@gmail.com",
     to: to,
     subject: subject,
     text: text,
