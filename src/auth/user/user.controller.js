@@ -43,7 +43,9 @@ const verifyOTPCode = async (req, res) => {
       delete req.session.generatedPIN;
       res.status(200).json({ message: "Valid otp" });
     } else {
-      res.status(401).json({ message: "OTP code is not valid!" });
+      res
+        .status(401)
+        .json({ message: "Invalid OTP. Please enter a valid code." });
     }
   } catch (error) {
     console.error(error);
