@@ -18,6 +18,8 @@ const resetPasswordPin = async (req, res) => {
         .json({ error: "We cannot find the user in the database" });
     }
 
+    req.session.generatedPIN = generatedPIN.toString();
+
     await OTP.create({
       email: user.email,
       otp: generatedPIN.toString(),
@@ -35,10 +37,10 @@ const resetPasswordPin = async (req, res) => {
 const verifyOTPCode = async (req, res) => {
   try {
     const { otp } = req.body;
-    const otpRecord = await OTP.findOne({
-      otp,
-    });
-    if (otpRecord) {
+    const storedOTP = req.session.generatedPIN;
+
+    if (storedOTP && storedOTP === otp) {
+      delete req.session.generatedPIN;
       res.status(200).json({ message: "Valid otp" });
     } else {
       res.status(401).json({ message: "OTP code is not valid!" });
@@ -48,7 +50,6 @@ const verifyOTPCode = async (req, res) => {
     res.status(500).json({ error: "internal server error" });
   }
 };
-//well that is not optimal cuz im only checking the otp i prop should check also email from the req body maybe in the feature
 
 const userLogin = async (req, res) => {
   try {

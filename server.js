@@ -2,18 +2,25 @@ import express from "express";
 import mongoose from "mongoose";
 import { authRouter } from "./src/auth/user/auth.routes.js";
 import { workoutRouter } from "./src/workout/workout.routes.js";
-import { MONGO_URI, PORT } from "./config/config.js";
+import { MONGO_URI, PORT, SESSION_KEY } from "./config/config.js";
 import dotenv from "dotenv";
 import cors from "cors";
+import Session from "express-session";
 
 dotenv.config();
 
 const app = express();
 
-//middleware
 app.use(cors());
 app.use(express.json());
-
+app.use(
+  Session({
+    secret: SESSION_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
 app.use("/workouts", workoutRouter);
 app.use("/auth", authRouter);
 
