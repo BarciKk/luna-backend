@@ -1,6 +1,8 @@
 import { User } from "./user.model.js";
 import bcrypt from "bcrypt";
+import { OTP } from "../OTP/otp.model.js";
 import jwt from "jsonwebtoken";
+import { expiresAt } from "../OTP/otp.helpers.js";
 
 import { loginValidation, registerValidation } from "./user.validation.js";
 import { resetPasswordToken } from "../../email/ResetPassword/resetPassword.mail.js";
@@ -9,14 +11,19 @@ const resetPasswordPin = async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
-    console.log(user);
-    const randomPinNumber = Math.floor(10000 + Math.random() * 90000);
+    const generatedPIN = Math.floor(10000 + Math.random() * 90000);
     if (!user) {
-      return res.status(401).json({ error: "Invalid username or password!" });
+      return res
+        .status(401)
+        .json({ error: "We cannot find the user in the database" });
     }
 
-    if (!randomPinNumber) return null;
-    await resetPasswordToken(randomPinNumber, user.email);
+    await OTP.create({
+      email: user.email,
+      otp: generatedPIN.toString(),
+      expiresAt,
+    });
+    await resetPasswordToken(generatedPIN, user.email, user.username);
 
     res.status(200).json({ message: "Password reset PIN sent successfully." });
   } catch (error) {
@@ -24,7 +31,26 @@ const resetPasswordPin = async (req, res) => {
     return res.status(500).json({ error: "Internal server error!" });
   }
 };
-//we have to handle last sended OTP to the user to verify that and next verify that s
+
+const verifyOTPCode = async (req, res) => {
+  try {
+    const { otp } = req.body;
+    const otpRecord = await OTP.findOne({
+      otp,
+    });
+
+    if (otpRecord) {
+      const { email } = otpRecord;
+
+      res.status(200).json({ message: "Valid otp" });
+    } else {
+      res.status(401).json({ message: "OTP code is not valid!" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
 
 const userLogin = async (req, res) => {
   try {
@@ -40,7 +66,7 @@ const userLogin = async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: "Invalid username or password!" });
     }
-    const checkPasswordMatch = await bcrypt.compare(password, user.password);
+    const checkPasswordMatch = bcrypt.compare(password, user.password);
 
     if (!checkPasswordMatch) {
       return res.status(401).json({ error: "Invalid username or password!" });
@@ -53,7 +79,6 @@ const userLogin = async (req, res) => {
       }
     );
     //supertest
-
     return res.json({ accessToken: accessToken, user: user });
   } catch {
     return res.status(500).json({ error: "user not found!!" });
@@ -109,4 +134,4 @@ const userRegister = async (req, res) => {
   return res.status(201).json({ registerToken: registerToken });
 };
 
-export { userLogin, userRegister, resetPasswordPin };
+export { userLogin, userRegister, resetPasswordPin, verifyOTPCode };

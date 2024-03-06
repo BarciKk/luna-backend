@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
 import { EMAIL_PASS, EMAIL_USER } from "../../config/config.js";
-// import dotenv from "dotenv";
 
 export const sendMail = async (to, subject, text, html) => {
   const transporter = nodemailer.createTransport({

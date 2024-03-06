@@ -1,11 +1,11 @@
-import { sendMail } from "../index.js";
+import { sendMail } from "../mail.controller.js";
+import { passwordsResetTemplate } from "../templates/resetPassword.template.js";
+async function resetPasswordToken(pin, to, username) {
+  const subject = "Your reset password requested pin.";
+  const text =
+    "You have requested a password reset. Please use the following PIN:";
+  const html = passwordsResetTemplate(pin, username);
 
-async function resetPasswordToken(pin, to) {
-  const subject = "Welcome to YourApp!";
-  const text = "Thank you for signing up. We're excited to have you!";
-  const html = `<p>Thank you for signing up. We're excited to have you!</p>
-    <h4>${pin}</h4>
-  `;
-  await sendMail(to, subject, text, html);
+  await sendMail(to, subject, text, html, username);
 }
 export { resetPasswordToken };
