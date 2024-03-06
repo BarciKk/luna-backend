@@ -38,10 +38,7 @@ const verifyOTPCode = async (req, res) => {
     const otpRecord = await OTP.findOne({
       otp,
     });
-
     if (otpRecord) {
-      const { email } = otpRecord;
-
       res.status(200).json({ message: "Valid otp" });
     } else {
       res.status(401).json({ message: "OTP code is not valid!" });
@@ -51,6 +48,7 @@ const verifyOTPCode = async (req, res) => {
     res.status(500).json({ error: "internal server error" });
   }
 };
+//well that is not optimal cuz im only checking the otp i prop should check also email from the req body maybe in the feature
 
 const userLogin = async (req, res) => {
   try {
