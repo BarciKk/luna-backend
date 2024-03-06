@@ -18,7 +18,7 @@ app.use(
     secret: SESSION_KEY,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: { secure: false, sameSite: "none" },
   })
 );
 app.use("/workouts", workoutRouter);
