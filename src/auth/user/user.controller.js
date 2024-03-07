@@ -2,7 +2,7 @@ import { User } from "./user.model.js";
 import bcrypt from "bcrypt";
 import { OTP } from "../OTP/otp.model.js";
 import jwt from "jsonwebtoken";
-import { expiresAt } from "../OTP/otp.helpers.js";
+import { expiresAt } from "../OTP/otp.constants.js";
 
 import { loginValidation, registerValidation } from "./user.validation.js";
 import { resetPasswordToken } from "../../email/ResetPassword/resetPassword.mail.js";
