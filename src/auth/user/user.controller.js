@@ -17,7 +17,7 @@ const resetPasswordPin = async (req, res) => {
         .status(401)
         .json({ error: "We cannot find the user in the database" });
     }
-
+    req.session.email = user.email;
     req.session.generatedPIN = generatedPIN.toString();
 
     await OTP.create({
@@ -27,10 +27,46 @@ const resetPasswordPin = async (req, res) => {
     });
     await resetPasswordToken(generatedPIN, user.email, user.username);
 
-    res.status(200).json({ message: "Password reset PIN sent successfully." });
+    return res
+      .status(200)
+      .json({ message: "Password reset PIN sent successfully." });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error!" });
+  }
+};
+const updateUserPassword = async (req, res) => {
+  try {
+    const { newPassword, repeatNewPassword } = req.body;
+    const storedEmail = req.session.email;
+
+    if (!storedEmail) {
+      return res.status(401).json({ message: "User not found in the session" });
+    }
+
+    const user = await User.findOne({ email: storedEmail });
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    const comparePasswords = newPassword === repeatNewPassword;
+
+    if (!comparePasswords) {
+      return res.status(401).json({ message: "Passwords do not match" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    delete req.session.email;
+    return res.status(200).json({ message: "Password updated successfully!" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error during password update" });
   }
 };
 
@@ -39,17 +75,21 @@ const verifyOTPCode = async (req, res) => {
     const { otp } = req.body;
     const storedOTP = req.session.generatedPIN;
 
+    if (!storedOTP) {
+      return res.status(401).json({ message: "You shouldn't be here" });
+    }
+
     if (storedOTP && storedOTP === otp) {
       delete req.session.generatedPIN;
-      res.status(200).json({ message: "Valid otp" });
+      return res.status(200).json({ message: "Valid otp" });
     } else {
-      res
+      return res
         .status(401)
         .json({ message: "Invalid OTP. Please enter a valid code." });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "internal server error" });
+    return res.status(500).json({ error: "internal server error" });
   }
 };
 
@@ -67,7 +107,7 @@ const userLogin = async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: "Invalid username or password!" });
     }
-    const checkPasswordMatch = bcrypt.compare(password, user.password);
+    const checkPasswordMatch = await bcrypt.compare(password, user.password);
 
     if (!checkPasswordMatch) {
       return res.status(401).json({ error: "Invalid username or password!" });
@@ -79,7 +119,6 @@ const userLogin = async (req, res) => {
         expiresIn: "2h",
       }
     );
-    //supertest
     return res.json({ accessToken: accessToken, user: user });
   } catch {
     return res.status(500).json({ error: "user not found!!" });
@@ -135,4 +174,10 @@ const userRegister = async (req, res) => {
   return res.status(201).json({ registerToken: registerToken });
 };
 
-export { userLogin, userRegister, resetPasswordPin, verifyOTPCode };
+export {
+  userLogin,
+  userRegister,
+  resetPasswordPin,
+  verifyOTPCode,
+  updateUserPassword,
+};
