@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { OTP } from "../OTP/otp.model.js";
 import jwt from "jsonwebtoken";
 import { expiresAt } from "../OTP/otp.constants.js";
-
+import { generateSecurePIN } from "./user.helpers.js";
 import { loginValidation, registerValidation } from "./user.validation.js";
 import { resetPasswordToken } from "../../email/ResetPassword/resetPassword.mail.js";
 
@@ -11,7 +11,7 @@ const resetPasswordPin = async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
-    const generatedPIN = Math.floor(10000 + Math.random() * 90000);
+    const generatedPIN = generateSecurePIN();
     if (!user) {
       return res
         .status(401)

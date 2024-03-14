@@ -25,7 +25,7 @@ app.use("/workouts", workoutRouter);
 app.use("/auth", authRouter);
 
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGO_URI)
   .then(() => {
     app.listen(PORT, () => {
       console.log(
