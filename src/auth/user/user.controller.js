@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { OTP } from "../OTP/otp.model.js";
 import jwt from "jsonwebtoken";
 import { expiresAt } from "../OTP/otp.constants.js";
-import { generateSecurePIN } from "./user.helpers.js";
+import { generateSecurePIN } from "./user.constants.js";
 import { loginValidation, registerValidation } from "./user.validation.js";
 import { resetPasswordToken } from "../../email/ResetPassword/resetPassword.mail.js";
 
