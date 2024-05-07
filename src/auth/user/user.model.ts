@@ -4,13 +4,11 @@ import { User } from "./user.types";
 const userSchema = new Schema<User>({
   username: {
     type: String,
-    required: true,
-    unique: true,
+    required: false,
   },
   lastname: {
     type: String,
-    required: true,
-    unique: true,
+    required: false,
   },
   password: {
     type: String,

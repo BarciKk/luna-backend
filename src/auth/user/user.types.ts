@@ -6,7 +6,7 @@ type User = {
   isActive: boolean;
   bio?: string;
   createdAt: Date;
-  email?: string;
+  email: string;
 };
 
 export { User };
