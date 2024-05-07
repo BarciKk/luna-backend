@@ -1,7 +1,13 @@
 import mongoose, { Schema } from "mongoose";
+import { User } from "./user.types";
 
-const userSchema = new Schema({
+const userSchema = new Schema<User>({
   username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  lastname: {
     type: String,
     required: true,
     unique: true,
@@ -15,9 +21,6 @@ const userSchema = new Schema({
   isActive: {
     type: Boolean,
     default: true,
-  },
-  repeatPassword: {
-    type: String,
   },
   bio: {
     type: String,
