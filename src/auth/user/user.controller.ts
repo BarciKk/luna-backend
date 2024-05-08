@@ -39,14 +39,25 @@ const resetPassword = async (req: Request, res: Response) => {
     const { token, password, repeatPassword } = req.body;
 
     if (password !== repeatPassword) {
-      return res.status(400).json({ error: "Passwords are not the same" });
+      return res.status(400).json({ message: "Passwords are not the same" });
     }
 
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN) as JwtPayload;
+    const decodedJwt = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN
+    ) as JwtPayload;
 
-    const user = await User.findOne({ _id: decoded.userId });
+    const user = await User.findOne({ _id: decodedJwt.userId });
+    if (!user) {
+      return res.status(400).json({ message: "We cannot find the user" });
+    }
 
-    console.log(user);
+    if (await bcrypt.compare(password, user.password)) {
+      return res
+        .status(400)
+        .json({ message: "You new password cannot be the same as old one" });
+    }
+
     if (!user) {
       return res.status(400).json({ error: "Invalid token" });
     }

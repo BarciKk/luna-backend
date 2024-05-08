@@ -1,4 +1,4 @@
-type User = {
+export type User = {
   username: string;
   lastname: string;
   password: string;
@@ -8,5 +8,3 @@ type User = {
   createdAt: Date;
   email: string;
 };
-
-export { User };
