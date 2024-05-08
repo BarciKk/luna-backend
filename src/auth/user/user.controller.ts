@@ -36,11 +36,7 @@ const forgotPassword = async (req: Request, res: Response) => {
 
 const resetPassword = async (req: Request, res: Response) => {
   try {
-    const { token, password, repeatPassword } = req.body;
-
-    if (password !== repeatPassword) {
-      return res.status(400).json({ message: "Passwords are not the same" });
-    }
+    const { token, password } = req.body;
 
     const decodedJwt = jwt.verify(
       token,
@@ -83,6 +79,8 @@ const userLogin = async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
     const user = await User.findOne({ username });
+
+    console.log(user);
 
     if (!user) {
       return res.status(401).json({ error: "Invalid username or password!" });
