@@ -74,7 +74,7 @@ const resetPassword = async (req: Request, res: Response) => {
   }
 };
 
-const userLogin = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
 
@@ -101,7 +101,7 @@ const userLogin = async (req: Request, res: Response) => {
   }
 };
 
-const userRegister = async (req: Request, res: Response) => {
+const register = async (req: Request, res: Response) => {
   const { username, lastname, password, email, repeatPassword } = req.body;
 
   const checkIfUserExist = await User.findOne({
@@ -148,4 +148,4 @@ const userRegister = async (req: Request, res: Response) => {
   });
 };
 
-export { userRegister, userLogin, resetPassword, forgotPassword };
+export { register, login, resetPassword, forgotPassword };

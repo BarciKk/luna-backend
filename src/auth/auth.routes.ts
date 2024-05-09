@@ -2,14 +2,14 @@ import { Router } from "express";
 import {
   forgotPassword,
   resetPassword,
-  userLogin,
-  userRegister,
-} from "./user/user.controller.js";
+  login,
+  register,
+} from "./user/auth.controller.js";
 
 const authRouter = Router();
 
-authRouter.post("/login", userLogin);
-authRouter.post("/register", userRegister);
+authRouter.post("/login", login);
+authRouter.post("/register", register);
 authRouter.post("/forgot-password", forgotPassword);
 authRouter.post("/reset-password/:token", resetPassword);
 
