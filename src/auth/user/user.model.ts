@@ -1,13 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "../../types/user/index";
+import { boolean } from "Joi";
 const userSchema = new Schema<User>({
   username: {
     type: String,
-    required: false,
   },
   lastname: {
     type: String,
-    required: false,
+    default: "",
   },
   password: {
     type: String,
@@ -31,6 +31,10 @@ const userSchema = new Schema<User>({
   email: {
     type: String,
     unique: true,
+  },
+  termsAndConditions: {
+    type: Boolean,
+    default: true,
   },
 });
 

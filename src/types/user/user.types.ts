@@ -7,4 +7,5 @@ export type User = {
   bio?: string;
   createdAt: Date;
   email: string;
+  termsAndConditions: boolean;
 };
