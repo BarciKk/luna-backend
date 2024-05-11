@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
 import { MONGO_URI, PORT } from "./config/config.js";
+import { validateData } from "./middleware/zod.middleware.js";
 
 dotenv.config();
 
@@ -18,9 +19,7 @@ mongoose
   .connect(MONGO_URI)
   .then(() => {
     app.listen(PORT, () => {
-      console.log(
-        `Connected property to the Database & working on port:${PORT}`
-      );
+      console.log(`Connected property to the Database & working on port:${PORT}`);
     });
   })
   .catch(() => {

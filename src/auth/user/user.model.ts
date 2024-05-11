@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "../../types/user/index";
-import { boolean } from "Joi";
+
+
 const userSchema = new Schema<User>({
   username: {
     type: String,
