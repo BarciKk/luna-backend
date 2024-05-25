@@ -5,7 +5,6 @@ import { Request, Response } from "express";
 import { forgotPasswordToken } from "../../email/Auth/resetPassword/email/forgotPassword.email.js";
 import { successResetPasswordMail } from "../../email/Auth/resetPassword/email/resetPasswordSuccess.email.js";
 
-
 const forgotPassword = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
@@ -88,22 +87,18 @@ const login = async (req: Request, res: Response) => {
 };
 
 const register = async (req: Request, res: Response) => {
-  const { username, lastname, password, email, repeatPassword } = req.body;
+  const { username, lastname, password, email } = req.body;
 
   const checkIfUserExist = await User.findOne({
     $or: [{ email }, { username }],
   });
 
- 
   if (checkIfUserExist) {
     if (checkIfUserExist.email === email) {
       return res.status(401).json({ error: "User with this email already exists!" });
     } else {
       return res.status(401).json({ error: "User with this username already exists!" });
     }
-  }
-  if (password !== repeatPassword) {
-    return res.status(401).json({ error: "Passwords do not match" });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
