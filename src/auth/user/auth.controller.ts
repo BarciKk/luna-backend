@@ -76,11 +76,11 @@ const login = async (req: Request, res: Response) => {
     if (!checkPasswordMatch) {
       return res.status(401).json({ error: "Invalid username or password!" });
     }
-    const loginJwt = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN, {
+    const loginToken = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN, {
       expiresIn: "2h",
     });
 
-    return res.status(200).json({ jwt: loginJwt, user: user });
+    return res.status(200).json({ token: loginToken, user: user });
   } catch (error) {
     return res.status(500).json({ error: "An error occurred!" });
   }
@@ -89,16 +89,10 @@ const login = async (req: Request, res: Response) => {
 const register = async (req: Request, res: Response) => {
   const { username, lastname, password, email } = req.body;
 
-  const checkIfUserExist = await User.findOne({
-    $or: [{ email }, { username }],
-  });
+  const checkIfUserExist = await User.findOne({ email });
 
-  if (checkIfUserExist) {
-    if (checkIfUserExist.email === email) {
-      return res.status(401).json({ error: "User with this email already exists!" });
-    } else {
-      return res.status(401).json({ error: "User with this username already exists!" });
-    }
+  if (checkIfUserExist?.email === email) {
+    return res.status(401).json({ error: "User with this email already exists!" });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -122,8 +116,8 @@ const register = async (req: Request, res: Response) => {
   );
 
   return res.status(200).json({
-    registerToken: registerJwt,
+    token: registerJwt,
   });
 };
-
+//please correct the statuses and u should improve error handling as well
 export { register, login, resetPassword, forgotPassword };
