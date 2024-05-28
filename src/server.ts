@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
 import { MONGO_URI, PORT } from "./config/config.js";
-import { validateData } from "./middleware/zod.middleware.js";
 
 dotenv.config();
 
