@@ -1,6 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { User } from "../../types/user/index";
-
+import { User } from "types/user";
 const userSchema = new Schema<User>({
   username: {
     type: String,

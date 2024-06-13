@@ -1,9 +1,9 @@
-import { User } from "./user.model.js";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response } from "express";
-import { forgotPasswordToken } from "../../email/Auth/resetPassword/email/forgotPassword.email.js";
-import { successResetPasswordMail } from "../../email/Auth/resetPassword/email/resetPasswordSuccess.email.js";
+import { successResetPasswordMail } from "email/Auth/resetPassword/email/resetPasswordSuccess.email.js";
+import { forgotPasswordToken } from "email/Auth/resetPassword/email/forgotPassword.email.js";
+import { User } from "./user.model";
 
 const forgotPassword = async (req: Request, res: Response) => {
   try {

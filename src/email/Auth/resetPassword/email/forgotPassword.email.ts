@@ -1,5 +1,6 @@
-import { sendMail } from "../../../mail.controller.js";
-import { forgotPassword } from "../template/forgotPassword.template.js";
+import { sendMail } from "email/mail.controller";
+import { forgotPassword } from "../template/forgotPassword.template";
+
 async function forgotPasswordToken(username: string, to: string, token: string) {
   const subject = "Your reset password requested pin.";
   const text = "You have requested a password reset.";

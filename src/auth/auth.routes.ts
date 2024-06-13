@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { forgotPassword, resetPassword, login, register } from "./user/auth.controller.js";
-import { validateData } from "../middleware/zod.middleware.js";
 import {
   forgotPasswordValidation,
   resetPasswordValidation,
   loginValidation,
   registerValidation,
-} from "../validations/auth.validation.js";
+} from "validations/auth.validation.js";
+import { validateData } from "middleware/zod.middleware.js";
 
 const authRouter = Router();
 
