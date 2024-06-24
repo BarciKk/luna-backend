@@ -1,11 +1,18 @@
 import mongoose from "mongoose";
-import { authRouter } from "./routes/auth.routes.js";
-import dotenv from "dotenv";
-import cors from "cors";
 import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+
+import { authRouter } from "./routes/auth.routes.js";
+import { userRouter } from "./routes/user.routes.js";
 import { MONGO_URI, PORT } from "./config/config.js";
-import { userRouter } from "routes/user.routes.js";
+import { swaggerOptions } from "swagger.config.js";
+
 dotenv.config();
+
+const swaggerJsDocs = swaggerJsdoc(swaggerOptions);
 
 const app = express();
 
@@ -14,6 +21,7 @@ app.use(cors({ credentials: true, origin: "http://localhost:8000" }));
 app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
+app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerJsDocs));
 
 mongoose
   .connect(MONGO_URI)
