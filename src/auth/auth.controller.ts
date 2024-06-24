@@ -3,16 +3,22 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response } from "express";
 import { successResetPasswordMail } from "email/Auth/resetPassword/email/resetPasswordSuccess.email.js";
 import { forgotPasswordToken } from "email/Auth/resetPassword/email/forgotPassword.email.js";
-import { User } from "./user.model";
+import { User } from "models";
 
 const forgotPassword = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
 
+    if (!email) {
+      return res.status(401).json({ success: false, message: "No email provided" });
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ error: "We cannot find the user in the database" });
+      return res
+        .status(401)
+        .json({ success: false, message: "We cannot find the user in the database" });
     }
     const resetPasswordToken = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN, {
       expiresIn: "1h",
@@ -24,7 +30,7 @@ const forgotPassword = async (req: Request, res: Response) => {
       success: true,
     });
   } catch (error) {
-    return res.status(500).json({ error: "An error occurred!", success: false });
+    return res.status(500).json({ message: "An error occurred!", success: false });
   }
 };
 
@@ -40,11 +46,13 @@ const resetPassword = async (req: Request, res: Response) => {
     }
 
     if (await bcrypt.compare(password, user.password)) {
-      return res.status(401).json({ message: "You new password cannot be the same as old one" });
+      return res
+        .status(401)
+        .json({ message: "You new password cannot be the same as old one", success: true });
     }
 
     if (!user) {
-      return res.status(401).json({ error: "Invalid token" });
+      return res.status(401).json({ message: "Invalid token", success: false });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -68,13 +76,15 @@ const login = async (req: Request, res: Response) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(401).json({ error: "Invalid username or password!" });
+      return res
+        .status(401)
+        .json({ success: false, message: "We cannot find user with such username" });
     }
 
     const checkPasswordMatch = await bcrypt.compare(password, user.password);
 
     if (!checkPasswordMatch) {
-      return res.status(401).json({ error: "Invalid username or password!" });
+      return res.status(401).json({ message: "Invalid username or password!", success: false });
     }
     const loginToken = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN, {
       expiresIn: "2h",
@@ -82,7 +92,7 @@ const login = async (req: Request, res: Response) => {
 
     return res.status(200).json({ token: loginToken, user: user });
   } catch (error) {
-    return res.status(500).json({ error: "An error occurred!" });
+    return res.status(500).json({ message: "An error occurred!", success: false });
   }
 };
 
@@ -92,7 +102,9 @@ const register = async (req: Request, res: Response) => {
   const checkIfUserExist = await User.findOne({ email });
 
   if (checkIfUserExist?.email === email) {
-    return res.status(401).json({ error: "User with this email already exists!" });
+    return res
+      .status(401)
+      .json({ message: "User with this email already exists!", success: false });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -119,5 +131,4 @@ const register = async (req: Request, res: Response) => {
     token: registerJwt,
   });
 };
-//please correct the statuses and u should improve error handling as well
 export { register, login, resetPassword, forgotPassword };

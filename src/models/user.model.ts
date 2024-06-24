@@ -1,3 +1,4 @@
+import { DEFAULT_USER_IMAGE } from "User/user.constants";
 import mongoose, { Schema } from "mongoose";
 import { User } from "types/user";
 const userSchema = new Schema<User>({
@@ -13,8 +14,7 @@ const userSchema = new Schema<User>({
   },
   avatar: {
     type: String,
-    default:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_ywnvKwB32lJoD9rnf9M-YqSI0FvEYiJx8g&s",
+    default: DEFAULT_USER_IMAGE,
   },
   isActive: {
     type: Boolean,

@@ -48,7 +48,7 @@ style="
       >
         Hey, ${username}
       </p>
-        <a href="http://localhost:8080/accounts/resetPassword/${token}">here!</a>
+        <a href="http://localhost:8000/accounts/resetPassword/${token}">here!</a>
     </div>
   </div>
   </p>
