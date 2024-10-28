@@ -6,7 +6,6 @@ import { authRoutes } from "./Routes/auth.routes";
 import { userRoutes } from "Routes/user.routes";
 
 dotenv.config();
-
 const app = express();
 
 app.use(express.json());
