@@ -1,0 +1,34 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id                 Int       @id @default(autoincrement()) 
+  username           String
+  lastname           String    @default("")
+  password           String
+  avatar             String    @default("https://i.imgur.com/uhaRENv.png")
+  isActive           Boolean   @default(true)
+  bio                String    @default("")
+  createdAt          DateTime  @default(now())
+  email              String    @unique
+  tokens             String[]  @default([""])
+  termsAndConditions Boolean    @default(true)
+  categories         Category[] 
+}
+
+model Category {
+  id        String   @id @default(uuid()) 
+  name      String
+  icon      String
+  userId    Int      
+  user      User     @relation(fields: [userId], references: [id]) 
+
+}

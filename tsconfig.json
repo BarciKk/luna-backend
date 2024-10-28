@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": "src",
+    "paths": {
+      "@hooks/*": ["src/auth/*"],
+      "@components/*": ["src/config/*"],
+      "@assets/*": ["src/dist/*"],
+      "@validation/*": ["src/email/*"],
+      "@api/*": ["src/middleware/*"],
+      "@types/*": ["src/types/*"],
+      "@constants/*": ["src/validations/*"]
+    }
+  },
+  "include": ["src"]
+}
