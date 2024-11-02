@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import { authRoutes } from "./Routes/auth.routes";
 import { userRoutes } from "Routes/user.routes";
+import { categoriesRoutes } from "Routes/categories.routes";
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors());
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use("/categories", categoriesRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);

@@ -12,14 +12,12 @@ const login = async (req: Request, res: Response) => {
     const { email, password }: Pick<User, "email" | "password"> = req.body;
 
     const user = await getUser(email);
-
     if (!user) {
       return res.status(401).json({
         message: "We cannot find the user in the database",
         success: false,
       });
     }
-    const { password: _, ...userWithoutPassoword } = user;
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
@@ -36,7 +34,7 @@ const login = async (req: Request, res: Response) => {
         expiresIn: "15m",
       }
     );
-    return res.status(200).json({ jwt: token, user: userWithoutPassoword });
+    return res.status(200).json({ jwt: token, user });
   } catch (error) {
     return res.status(500).json({
       message: `An error occurred during the login process! ${error}`,

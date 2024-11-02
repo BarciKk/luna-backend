@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
+import { userInfo } from "os";
 
 const prisma = new PrismaClient();
 
@@ -17,6 +18,7 @@ const getCurrentUser = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const user = await prisma.user.findUnique({
       where: { id: Number(userId) },
+      include: { categories: true },
     });
 
     if (!user) {

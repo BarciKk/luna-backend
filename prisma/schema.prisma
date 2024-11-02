@@ -7,7 +7,15 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model Category {
+  id        String   @id @default(uuid()) 
+  name      String
+  color     String
+  icon      String
+  userId    Int      
+  user      User     @relation(fields: [userId], references: [id]) 
 
+}
 
 model User {
   id                 Int       @id @default(autoincrement()) 
@@ -20,15 +28,7 @@ model User {
   createdAt          DateTime  @default(now())
   email              String    @unique
   tokens             String[]  @default([""])
-  termsAndConditions Boolean    @default(true)
-  categories         Category[] 
+  termsAndConditions Boolean   @default(true)
+  categories         Category[]
 }
 
-model Category {
-  id        String   @id @default(uuid()) 
-  name      String
-  icon      String
-  userId    Int      
-  user      User     @relation(fields: [userId], references: [id]) 
-
-}
