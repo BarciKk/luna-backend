@@ -1,7 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { getUser } from "User/user.controller";
+import { getUserByEmail } from "User/user.controller";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { forgotPasswordToken } from "Email/ForgotPassword/forgotPassword.mail";
 
@@ -11,7 +11,7 @@ const login = async (req: Request, res: Response) => {
   try {
     const { email, password }: Pick<User, "email" | "password"> = req.body;
 
-    const user = await getUser(email);
+    const user = await getUserByEmail(email);
     if (!user) {
       return res.status(401).json({
         message: "We cannot find the user in the database",
@@ -52,7 +52,7 @@ const register = async (req: Request, res: Response) => {
       email,
     }: Pick<User, "username" | "email" | "password" | "lastname"> = req.body;
 
-    const user = await getUser(email);
+    const user = await getUserByEmail(email);
 
     if (user) {
       return res.status(400).json({
@@ -102,7 +102,7 @@ const forgotPassword = async (req: Request, res: Response) => {
         .status(401)
         .json({ message: "U didnt provide any email!", success: false });
     }
-    const user = await getUser(email);
+    const user = await getUserByEmail(email);
 
     if (!user) {
       return res.status(400).json({
