@@ -3,6 +3,53 @@ import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
+export const editCategory = async (req: Request, res: Response) => {
+  const { id, name, icon, userId, color } = req.body;
+
+  if (!id) {
+    return res
+      .status(400)
+      .json({ message: "CategoryId is required", success: false });
+  }
+  if (color === "") {
+    return res
+      .status(401)
+      .json({ message: "Color cannot be transparent !", success: false });
+  }
+
+  try {
+    const category = await prisma.category.findUnique({ where: { id: id } });
+
+    if (!category) {
+      return res
+        .status(404)
+        .json({ message: "Category not found", success: false });
+    }
+
+    if (category.userId !== userId) {
+      return res.status(403).json({
+        message: "Unauthorized to edit this category",
+        success: false,
+      });
+    }
+
+    await prisma.category.update({
+      where: { id: id },
+      data: { name, icon, color },
+    });
+
+    return res.status(200).json({
+      message: "Category updated successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", success: false });
+  }
+};
+
 export const getCategory = async (req: Request, res: Response) => {
   const { categoryId } = req.params;
 
