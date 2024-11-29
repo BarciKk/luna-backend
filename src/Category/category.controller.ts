@@ -3,6 +3,59 @@ import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
+export const getCategory = async (req: Request, res: Response) => {
+  const { categoryId } = req.params;
+
+  if (!categoryId) {
+    return res
+      .status(400)
+      .json({ message: "CategoryId is required", success: false });
+  }
+
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id: categoryId },
+    });
+
+    if (!category) {
+      return res.status(404).json({
+        message: "Category not found",
+        success: false,
+      });
+    }
+
+    res.status(200).json(category);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Failed to fetch category", success: false });
+  }
+};
+
+export const getAllCategories = async (req: Request, res: Response) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res
+      .status(401)
+      .json({ message: "User ID is required", success: false });
+  }
+
+  try {
+    const userCategories = await prisma.category.findMany({
+      where: { userId: Number(userId) },
+    });
+
+    res.status(200).json(userCategories);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Failed to fetch categories", success: false });
+  }
+};
+
 export const createCategory = async (req: Request, res: Response) => {
   const { name, icon, userId, color } = req.body;
 
