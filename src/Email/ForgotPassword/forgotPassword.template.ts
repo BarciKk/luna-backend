@@ -1,71 +1,48 @@
-export const forgotPassword = (username: string, token: string) =>
-  `
-  <div
-  style="
-    margin: 0 auto;
-    font-family: 'Poppins', sans-serif;
-    max-width: 600px;
-    border-radius: 8px;
-    padding: 45px 30px 60px;
-    background: #f5f5f5;
-    background-image: url(https://img.freepik.com/free-vector/watercolor-amber-background_23-2150241002.jpg?size=626&ext=jpg&ga=GA1.1.1395880969.1709769600&semt=ais);
-    background-repeat: no-repeat;
-    background-size: 800px 452px;
-    background-position: top center;
-    font-size: 14px;
-    color: #434343;
-  "
-  >
-  <main>
-    <div
-      style="
-        margin: 0;
-        margin-top: 5em;
-        padding: 92px 30px 115px;
-        background: #ffffff;
-        border-radius: 3em;
-        text-align: center;
-      "
-    >
-      <div style="width: 100%; max-width: 489px; margin: 0 auto">
-        <h1
-          style="
-            margin: 0;
-            font-size: 24px;
-            font-weight: 500;
-            color: #1f1f1f;
-          "
-        >
-          Your OTP
-        </h1>
-        <p
-          style="
-            margin: 0;
-            margin-top: 10px;
-            font-size: 16px;
-            font-weight: 500;
-          "
-        >
-          Hey, ${username}
-        </p>
-          <a href="http://localhost:8000/accounts/resetPassword/${token}">here!</a>
-      </div>
-    </div>
-    </p>
-  </main>
-  
-  <footer
-    style="
-      width: 100%;
-      max-width: 490px;
-      margin: 20px auto 0;
-      text-align: center;
-      border-top: 1px solid #e6ebf1;
-    "
-  >
-    <p style="margin: 0; margin-top: 16px; color: #434343">
-      Copyright © 2024 Company. All rights reserved.
-    </p>
-  </footer>
-  </div>
-  `;
+export const forgotPassword = (username: string, token: string) => `
+ <table
+  style="width: 100%; max-width: 600px; margin: 0 auto; text-align: center;"
+>
+  <tr>
+    <td style="font-size: 42px; font-weight: bold; color: rgb(101, 101, 236);">
+      LunaSync
+    </td>
+  </tr>
+  <tr>
+    <td style="font-size: 24px; padding-top: 16px;">Reset your password</td>
+  </tr>
+  <tr>
+    <td style="border-bottom: 2px solid rgb(101, 101, 236); width: 60%; margin: 0 auto; padding-bottom: 8px;"></td>
+  </tr>
+  <tr>
+    <td style="padding-top: 30px; text-align: left; font-size: 16px; line-height: 1.6;">
+      Hi, ${username},
+      <br />
+      You have requested to reset the password in your LunaSync account. Please click the link below to reset your password:
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 30px 0;">
+      <a
+        href="http://localhost:8000/accounts/resetPassword/${token}"
+        style="
+          display: inline-block;
+          padding: 12px 24px;
+          background-color: rgb(179, 179, 233);
+          color: rgb(20, 20, 20);
+          text-decoration: none;
+          font-weight: bold;
+          font-size: 16px;
+        "
+      >
+        Reset Now!
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding-top: 50px; font-size: 12px; color: gray;">
+      If you did not request a password reset, feel free to ignore this message.
+    </td>
+  </tr>
+</table>
+
+`;

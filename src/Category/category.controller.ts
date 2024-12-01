@@ -11,6 +11,7 @@ export const editCategory = async (req: Request, res: Response) => {
       .status(400)
       .json({ message: "CategoryId is required", success: false });
   }
+  //!NOTE: validation prop gonna get rid of that but for now leave like that
   if (color === "") {
     return res
       .status(401)
@@ -106,7 +107,7 @@ export const getAllCategories = async (req: Request, res: Response) => {
 export const createCategory = async (req: Request, res: Response) => {
   const { name, icon, userId, color } = req.body;
 
-  if (!name || !icon || !userId || !color) {
+  if (!name || !icon || !userId || !color || color === "") {
     return res.status(400).json({
       success: false,
       message: "All fields are required to create a category",
