@@ -11,7 +11,6 @@ export const editCategory = async (req: Request, res: Response) => {
       .status(400)
       .json({ message: "CategoryId is required", success: false });
   }
-  //!NOTE: validation prop gonna get rid of that but for now leave like that
   if (color === "") {
     return res
       .status(401)

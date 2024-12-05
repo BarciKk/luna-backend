@@ -164,7 +164,7 @@ const resetPassword = async (req: Request, res: Response) => {
     }
 
     if (isSamePassword) {
-      return res.status(400).json({
+      return res.status(401).json({
         message: "New password cannot be the same as the old one",
         success: false,
       });
