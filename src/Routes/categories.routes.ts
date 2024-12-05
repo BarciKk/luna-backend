@@ -6,13 +6,14 @@ import {
   getCategory,
 } from "Category/category.controller";
 import { Router } from "express";
+import { verifyToken } from "Middleware/verifyToken";
 
 const categoriesRoutes = Router();
 
-categoriesRoutes.post("/create", createCategory);
-categoriesRoutes.post("/", getAllCategories);
-categoriesRoutes.get("/:categoryId", getCategory);
-categoriesRoutes.delete("/delete", deleteCategory);
-categoriesRoutes.patch("/edit", editCategory);
+categoriesRoutes.post("/create", verifyToken, createCategory);
+categoriesRoutes.post("/", verifyToken, getAllCategories);
+categoriesRoutes.get("/:categoryId", verifyToken, getCategory);
+categoriesRoutes.delete("/delete", verifyToken, deleteCategory);
+categoriesRoutes.patch("/edit", verifyToken, editCategory);
 
 export { categoriesRoutes };

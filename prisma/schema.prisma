@@ -7,6 +7,25 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+model Task {
+  id            String @id @default(uuid())
+  name          String
+  date          DateTime  
+  iconName      String @default("star")
+  createdAt     DateTime @default(now())
+  priority      Int @default(1)
+  description   String?
+  status        String  @default("PENDING")
+  recurringTask Boolean @default(false)
+  user          User      @relation(fields: [userId], references: [id])
+  userId        Int
+}
+
+
+
+
 model Category {
   id        String   @id @default(uuid()) 
   name      String
@@ -30,5 +49,6 @@ model User {
   tokens             String[]  @default([""])
   termsAndConditions Boolean   @default(true)
   categories         Category[]
+  tasks              Task[]
 }
 
