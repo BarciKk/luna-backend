@@ -6,7 +6,7 @@ async function forgotPasswordToken(
   to: string,
   token: string
 ) {
-  const subject = "Your reset password requested pin.";
+  const subject = "You have requested a password reset.";
   const text = "You have requested a password reset.";
   const html = forgotPassword(username, token);
 
