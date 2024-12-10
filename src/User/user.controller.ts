@@ -30,7 +30,7 @@ const getCurrentUser = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const user = await prisma.user.findUnique({
       where: { id: Number(userId) },
-      include: { categories: true },
+      include: { categories: true, tasks: true },
     });
 
     if (!user) {

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { z, ZodError, ZodType } from "zod";
+import { ZodError, ZodType } from "zod";
 
 export function validateData<T extends ZodType<any, any, any>>(schema: T) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -12,10 +12,10 @@ export function validateData<T extends ZodType<any, any, any>>(schema: T) {
           message: `${issue.path.join(".")} is ${issue.message}`,
         }));
         res
-          .status(402)
+          .status(400)
           .json({ success: false, message: errorMessages[0].message });
       } else {
-        res.status(500).json({ error: "Internal Server Error" });
+        res.status(400).json({ error: "Internal Server Error" });
       }
     }
   };

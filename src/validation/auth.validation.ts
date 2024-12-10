@@ -1,49 +1,56 @@
 import { translateValidateMessage } from "Utils/validateMessage";
 import { z } from "zod";
 
-const validate = {
-  email: z
-    .string()
-    .email(translateValidateMessage("emailValidFormat"))
-    .min(3)
-    .max(64),
-  username: z
-    .string()
-    .min(4, translateValidateMessage("minUsernameLength"))
-    .max(32),
-  password: z.string().min(8, translateValidateMessage("minPasswordLength")),
-  confirmPassword: z
-    .string()
-    .min(8, translateValidateMessage("confirmPassword")),
-  terms: z.literal(true, {
-    errorMap: () => ({ message: "You must accept Terms and Conditions" }),
-  }),
-};
+const emailSchema = z
+  .string()
+  .email({ message: translateValidateMessage("emailValidFormat") })
+  .min(3, { message: "Email must be at least 3 characters long" })
+  .max(64, { message: "Email must not exceed 64 characters" });
+
+const usernameSchema = z
+  .string()
+  .min(4, { message: translateValidateMessage("minUsernameLength") })
+  .max(32, { message: "Username must not exceed 32 characters" });
+
+const passwordSchema = z
+  .string()
+  .min(8, { message: translateValidateMessage("minPasswordLength") });
+
+const repeatPasswordSchema = passwordSchema.refine(
+  (value) => value !== undefined && value.length >= 8,
+  {
+    message: translateValidateMessage("confirmPassword"),
+  }
+);
+
+const termsSchema = z.literal(true, {
+  errorMap: () => ({ message: "You must accept Terms and Conditions" }),
+});
 
 const registerSchema = z
   .object({
-    email: validate.email,
-    username: validate.username,
-    password: validate.password,
-    repeatPassword: validate.confirmPassword,
-    terms: validate.terms,
+    email: emailSchema,
+    username: usernameSchema,
+    password: passwordSchema,
+    repeatPassword: repeatPasswordSchema,
+    terms: termsSchema,
   })
-  .refine(({ password, repeatPassword }) => password === repeatPassword, {
+  .refine((data) => data.password === data.repeatPassword, {
     message: "Passwords don't match",
     path: ["repeatPassword"],
   });
 
 const loginSchema = z.object({
-  email: validate.email,
-  password: validate.password,
+  email: emailSchema,
+  password: passwordSchema,
 });
 
 const resetPasswordEmailSchema = z.object({
-  email: validate.email,
+  email: emailSchema,
 });
 
 const updatePasswordSchema = z.object({
-  password: validate.password,
+  password: passwordSchema,
 });
 
 export {
