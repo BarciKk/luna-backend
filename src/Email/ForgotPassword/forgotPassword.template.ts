@@ -23,7 +23,7 @@ export const forgotPassword = (username: string, token: string) => `
   <tr>
     <td style="padding: 30px 0;">
       <a
-        href="http://localhost:8000/accounts/resetPassword/${token}"
+        href="http://localhost:8000/accounts/reset-password/${token}"
         style="
           display: inline-block;
           padding: 12px 24px;
