@@ -1,4 +1,5 @@
 import express from "express";
+
 import cors from "cors";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
@@ -22,6 +23,3 @@ app.use("/tasks", taskRoutes);
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });
-
-//!NOTE: Update   validation and work around the tests :)
-//!NOTE: Reset password tokens should be cleared in the user shcema

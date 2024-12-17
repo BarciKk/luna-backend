@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,47 +7,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Task {
-  id            String @id @default(uuid())
+  id            String   @id @default(uuid())
   name          String
-  date          DateTime  
-  iconName      String @default("star")
-  createdAt     DateTime @default(now())
-  priority      Int @default(1)
+  date          DateTime
+  priority      Int      @default(1)
   description   String?
-  status        String  @default("PENDING")
-  recurringTask Boolean @default(false)
-  user          User      @relation(fields: [userId], references: [id])
+  status        String   @default("PENDING")
+  recurringTask Boolean  @default(false)
   userId        Int
+  createdAt     DateTime @default(now())
+  iconName          String   @default("star")
+  user          User     @relation(fields: [userId], references: [id])
 }
 
-
-
-
 model Category {
-  id        String   @id @default(uuid()) 
-  name      String
-  color     String
-  icon      String
-  userId    Int      
-  user      User     @relation(fields: [userId], references: [id]) 
-
+  id     String @id @default(uuid())
+  name   String
+  icon   String
+  userId Int
+  color  String
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id                 Int       @id @default(autoincrement()) 
   username           String
-  lastname           String    @default("")
+  lastname           String     @default("")
   password           String
-  avatar             String    @default("https://i.imgur.com/uhaRENv.png")
-  isActive           Boolean   @default(true)
-  bio                String    @default("")
-  createdAt          DateTime  @default(now())
-  email              String    @unique
-  tokens             String[]  @default([""])
-  termsAndConditions Boolean   @default(true)
+  avatar             String     @default("https://i.imgur.com/uhaRENv.png")
+  isActive           Boolean    @default(true)
+  bio                String     @default("")
+  createdAt          DateTime   @default(now())
+  email              String     @unique
+  termsAndConditions Boolean    @default(true)
+  tokens             String[]   @default([""])
+  id                 Int        @id @default(autoincrement())
   categories         Category[]
   tasks              Task[]
 }
-
